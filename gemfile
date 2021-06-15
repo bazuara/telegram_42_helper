@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+gem 'telegram-bot-ruby'
+gem 'yaml'
+gem 'json'
+gem 'oauth2'
+gem 'pp'
