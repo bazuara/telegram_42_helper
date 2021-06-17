@@ -31,8 +31,7 @@ Telegram::Bot::Client.run(bot_token) do |bot|
 		  bot.api.send_message(chat_id: message.chat.id, text: "Hello there, #{message.from.first_name}")
 	  elsif message.text.include? '/info'
 		user = message.text.split[1]
-		
-		pp "Debug user: #{user}"
+		pp "Showing #{user}'s info"
 		begin
 			token = client.client_credentials.get_token
 			answer = token.get("/v2/users/#{user}").parsed
@@ -49,7 +48,8 @@ Telegram::Bot::Client.run(bot_token) do |bot|
 			else
 				str_date = answer['cursus_users'].last['blackholed_at']
 				date = DateTime.parse(str_date)
-				blk_str = "#{(date - DateTime.now).to_i} days"
+				blk_str = "#{(date - DateTime.now).to_i} days, "
+                blk_str << date.strftime("at %d/%m/%y")
 			end
 				
 			bot.api.send_message(chat_id: message.chat.id, text:
@@ -65,7 +65,7 @@ Telegram::Bot::Client.run(bot_token) do |bot|
 	  elsif message.text.include? '/stop'
 		bot.api.send_message(chat_id: message.chat.id, text: "Bye, #{message.from.first_name}")
 	  else
-		  pp "command not recogniced"
+		  bot.api.send_message(chat_id: message.chat.id, text: "command not recogniced")
 	  end
   end
 end
