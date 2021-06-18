@@ -97,13 +97,14 @@ def hours_command(client, message, bot)
     g.title = "#{user}\'s hours"
     hour_array = hour_array.slice(0, 7)
     g.data("#{user}", hour_array)
+    g.minimum_value = 0
 
     g.labels = dates_hash
     g.baseline_value = hour_array.reduce(:+) / hour_array.size.to_f
     g.baseline_color = 'green'
 
-    g.write('./line_baseline.png')
-    bot.api.send_photo(chat_id: message.chat.id, photo: Faraday::UploadIO.new('line_baseline.png', 'image/png'))
+    g.write('./temp_graph.png')
+    bot.api.send_photo(chat_id: message.chat.id, photo: Faraday::UploadIO.new('temp_graph.png', 'image/png'))
 end
 
 # Telegram bot config
@@ -115,7 +116,11 @@ Telegram::Bot::Client.run(bot_token) do |bot|
 	  elsif message.text.include? '/info'
         info_command(client, message, bot)
       elsif message.text.include? '/hours'
-        hours_command(client, message, bot)
+        begin
+          hours_command(client, message, bot)
+        rescue
+          bot.api.send_message(chat_id: message.chat.id, text: "Error, wrong user or API down")
+        end
 	  elsif message.text.include? '/stop'
 		bot.api.send_message(chat_id: message.chat.id, text: "Bye, #{message.from.first_name}")
         exit
