@@ -28,13 +28,7 @@ def hours_command(client, message, bot)
     # graphic theme
     g.theme = {
       colors: [
-      '#17adad',  # intra green
-      '#6886B4',  # blue
-      '#72AE6E',  # green
-      '#D1695E',  # red
-      '#8A6EAF',  # purple
-      '#EFAA43',  # orange
-      'white'
+      '#17adad'  # intra green
     ],
     marker_color: 'white',
     font_color: 'white',
@@ -52,4 +46,5 @@ def hours_command(client, message, bot)
 
     g.write('./temp_graph.png')
     bot.api.send_photo(chat_id: message.chat.id, photo: Faraday::UploadIO.new('temp_graph.png', 'image/png'))
+    File.delete('temp_graph.png')
 end
