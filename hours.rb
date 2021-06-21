@@ -1,6 +1,11 @@
 #hours command
 def hours_command(client, message, bot)
     user = message.text.split[1]
+    if message.text.split[2] == nil
+      length = 7
+    else
+      length = message.text.split[2].to_f
+    end
 	token = client.client_credentials.get_token
     string_plot = token.get("v2/users/#{user}/locations_stats").parsed
     p "Hours fetched for #{user}, calculating..."
@@ -36,7 +41,7 @@ def hours_command(client, message, bot)
     }
     
     g.title = "#{user.capitalize}\'s hours"
-    hour_array = hour_array.slice(0, 7)
+    hour_array = hour_array.slice(0, length)
     g.data("#{user.capitalize}", hour_array)
     g.minimum_value = 0
 
