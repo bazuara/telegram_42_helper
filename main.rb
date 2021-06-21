@@ -49,13 +49,13 @@ def info_command(client, message, bot)
       blk_str << date.strftime("at %d/%m/%y")
     end
 				
-    bot.api.send_message(chat_id: message.chat.id, text:
-                         "Full Name: #{answer['usual_full_name']}\n"\
-                         "Coalition: #{coa_name}\n"\
-                         "Piscine: #{answer['pool_month'].capitalize} #{answer['pool_year']}\n"\
-                         "Evaluation points #{answer['correction_point'].to_s}\n"\
-                         "Blackholed in #{blk_str}")
-    bot.api.send_photo(chat_id: message.chat.id, photo: answer['image_url'])
+    info_string = "Full Name: #{answer['usual_full_name']}\n"\
+    "Coalition: #{coa_name}\n"\
+    "Piscine: #{answer['pool_month'].capitalize} #{answer['pool_year']}\n"\
+    "Evaluation points #{answer['correction_point'].to_s}\n"\
+    "Blackholed in #{blk_str}"
+
+    bot.api.send_photo(chat_id: message.chat.id, photo: answer['image_url'], caption: info_string)
 	rescue
 		bot.api.send_message(chat_id: message.chat.id, text: "Something went wrong")
 	end
