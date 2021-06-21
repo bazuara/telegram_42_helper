@@ -54,8 +54,7 @@ def info_command(client, message, bot)
                          "Coalition: #{coa_name}\n"\
                          "Piscine: #{answer['pool_month'].capitalize} #{answer['pool_year']}\n"\
                          "Evaluation points #{answer['correction_point'].to_s}\n"\
-                         "Blackholed in #{blk_str}\n"\
-                         "${string_plot}")
+                         "Blackholed in #{blk_str}")
     bot.api.send_photo(chat_id: message.chat.id, photo: answer['image_url'])
 	rescue
 		bot.api.send_message(chat_id: message.chat.id, text: "Something went wrong")
@@ -86,14 +85,25 @@ def hours_command(client, message, bot)
       hour_array.push(h)
     end
 
-#    p "dates hash:"
-#    pp dates_hash
-#    p "hour array:"
-#    pp hour_array
-    
     #render graphic
     p "Rendering..."
     g = Gruff::Line.new
+    # graphic theme
+    g.theme = {
+      colors: [
+      '#17adad',  # intra green
+      '#6886B4',  # blue
+      '#72AE6E',  # green
+      '#D1695E',  # red
+      '#8A6EAF',  # purple
+      '#EFAA43',  # orange
+      'white'
+    ],
+    marker_color: 'white',
+    font_color: 'white',
+    background_colors: %w[#17191f #1f212b]
+    }
+    
     g.title = "#{user}\'s hours"
     hour_array = hour_array.slice(0, 7)
     g.data("#{user}", hour_array)
