@@ -15,9 +15,10 @@ load 'info.rb'
 begin
 	bot_config = YAML.load_file("secret.credentials.yml")
 	bot_token  = bot_config["bot_telegram"]["bot_token"]
-rescue
-	puts "Wrong secret.credentials.yml file, are you sure it exist and is formated ok?"
-	exit
+rescue StandardError => err
+  p "Rescue @Load_credentials #{err.inspect}"
+  p "Wrong secret.credentials.yml file, are you sure it exist and is formated ok?"
+  exit
 end
 
 
@@ -38,11 +39,7 @@ Telegram::Bot::Client.run(bot_token) do |bot|
 	  elsif message.text.include? '/info'
         info_command(client, message, bot)
       elsif message.text.include? '/hours'
-        begin
           hours_command(client, message, bot)
-        rescue
-          bot.api.send_message(chat_id: message.chat.id, text: "Error, wrong user or API down")
-        end
 	  elsif message.text.include? '/stop'
 		bot.api.send_message(chat_id: message.chat.id, text: "Bye, #{message.from.first_name}")
         exit

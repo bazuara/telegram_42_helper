@@ -1,5 +1,6 @@
 #hours command
 def hours_command(client, message, bot)
+  begin
     user = message.text.split[1]
     if message.text.split[2] == nil
       length = 7
@@ -51,5 +52,9 @@ def hours_command(client, message, bot)
 
     g.write('./temp_graph.png')
     bot.api.send_photo(chat_id: message.chat.id, photo: Faraday::UploadIO.new('temp_graph.png', 'image/png'))
-    File.delete('temp_graph.png')
+    #File.delete('temp_graph.png')
+  rescue StandardError => err
+    p "Rescued @hours #{err.inspect}"
+    bot.api.send_message(chat_id: message.chat.id, text: "Something went wrong. *Usage:* /hours _USERNAME_ days", parse_mode: "Markdown")
+  end
 end

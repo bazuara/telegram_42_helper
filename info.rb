@@ -29,8 +29,9 @@ def info_command(client, message, bot)
     "*Blackholed in* #{blk_str}"
 
     bot.api.send_photo(chat_id: message.chat.id, photo: answer['image_url'], caption: info_string, parse_mode: "Markdown")
-	rescue
-		bot.api.send_message(chat_id: message.chat.id, text: "Something went wrong")
+	rescue StandardError => err
+      p "Rescued @info: #{err.inspect}"
+      bot.api.send_message(chat_id: message.chat.id, text: "Something went wrong. *Usage:* /info _USERNAME_", parse_mode: "Markdown")
 	end
 end
 
