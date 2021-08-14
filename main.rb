@@ -4,7 +4,7 @@ require 'telegram/bot'
 require 'yaml'
 require 'json'
 require 'oauth2'
-require "pp"
+require 'pp'
 require 'unicode_plot'
 require 'gruff'
 
