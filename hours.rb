@@ -34,7 +34,7 @@ def render_hours(user_data, len, user)
   p 'rendering'
   g = Gruff::Line.new
   # graphic theme
-  g.theme = {colors: ['#17adad'], marker_color: 'white', font_color: 'white', background_colors: %w[#17191f #1f212b]}
+  g.theme = { colors: ['#17adad'], marker_color: 'white', font_color: 'white', background_colors: %w[#17191f #1f212b] }
 
   g.title = "#{user}\'s hours"
   g.data(user, user_data.hour_array.slice(0, len))
