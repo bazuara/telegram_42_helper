@@ -29,6 +29,28 @@ client_secret = config['api']['client_secret']
 
 client = OAuth2::Client.new(client_id, client_secret, site: 'https://api.intra.42.fr')
 
+# testing area
+# {{url}}/cursus/9/cursus_users?sort=-id&filter[campus_id]=22&filter[active]=true
+def last_command(client, message, bot)
+  token = client.client_credentials.get_token
+  page = 1
+  answer = token.get("/v2/users/?filter[primary_campus_id]=22&filter[pool_month]=august&filter[pool_year]=2021&page=#{page}").parsed
+  names = []
+  until answer == [] || page == 20
+    answer.each_with_index do |user, i|
+      names << user['login']
+    end
+    answer = token.get("/v2/users/?filter[primary_campus_id]=22&filter[pool_month]=august&filter[pool_year]=2021&page=#{page}").parsed
+    page += 1
+    sleep(1)
+  end
+  names.each do |name|
+    p name
+  end
+  p names.length
+  exit
+end
+
 # Telegram bot config
 
 Telegram::Bot::Client.run(bot_token) do |bot|
@@ -39,6 +61,8 @@ Telegram::Bot::Client.run(bot_token) do |bot|
       info_command(client, message, bot)
     elsif message.text.include? '/hours'
       hours_command(client, message, bot)
+    elsif message.text.include? '/last'
+      last_command(client, message, bot)
     elsif message.text.include? '/stop'
       bot.api.send_message(chat_id: message.chat.id, text: "Bye, #{message.from.first_name}")
       exit
